@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="bs">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>Explore Bosnia | Otkrij ljepotu BiH</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,600;14..32,700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-container">
+
+        <nav class="navbar">
+            <div class="nav-brand">
+                <i class="fas fa-mountain"></i>
+                <span>Explore<span class="highlight">Bosnia</span></span>
+            </div>
+            <div class="nav-links" id="navLinks">
+                <a href="#home" class="nav-link active">Početna</a>
+                <a href="#destinations" class="nav-link">Destinacije</a>
+                <a href="#gallery" class="nav-link">Galerija</a>
+                <a href="#about" class="nav-link">O Bosni</a>
+                <a href="#wishlist-page" class="nav-link favorites-nav"><i class="fas fa-heart"></i> <span
+                        class="fav-count">0</span></a>
+            </div>
+            <div class="nav-actions">
+                <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+                <button class="mobile-menu-btn" id="mobileMenuBtn"><i class="fas fa-bars"></i></button>
+            </div>
+        </nav>
+
+
+        <section id="home" class="hero-section">
+            <div class="hero-overlay"></div>
+            <div class="hero-content">
+                <h1>Otkrij <span class="highlight">Bosnu i Hercegovinu</span></h1>
+                <p>Zemlju netaknute prirode, bogate historije i toplog gostoprimstva</p>
+                <div class="hero-stats">
+                    <div class="stat"><i class="fas fa-tree"></i> 4+ Nacionalna parka</div>
+                    <div class="stat"><i class="fas fa-landmark"></i> 6 UNESCO spomenika</div>
+                    <div class="stat"><i class="fas fa-hiking"></i> 200+ planinskih vrhova</div>
+                </div>
+            </div>
+        </section>
+
+
+        <section class="search-filter-section">
+            <div class="search-container">
+                <i class="fas fa-search search-icon"></i>
+                <input type="text" id="searchInput" placeholder="Pretraži gradove, prirodu, historiju, atrakcije..."
+                    autocomplete="off">
+                <div id="suggestionsBox" class="suggestions-box"></div>
+            </div>
+            <div class="filter-chips" id="filterChips">
+                <button data-filter="all" class="chip active">Sve</button>
+                <button data-filter="historija" class="chip">📜 Historija</button>
+                <button data-filter="priroda" class="chip">🌿 Priroda</button>
+                <button data-filter="planine" class="chip">⛰️ Planine</button>
+                <button data-filter="jezera" class="chip">💧 Jezera</button>
+                <button data-filter="adventure" class="chip">🧗 Adventure</button>
+                <button data-filter="culture" class="chip">🎭 Culture</button>
+                <button data-filter="food" class="chip">🍽️ Food</button>
+                <button data-filter="nightlife" class="chip">🌙 Nightlife</button>
+            </div>
+            <div class="sort-bar">
+                <span>Sortiraj:</span>
+                <select id="sortSelect">
+                    <option value="default">Preporučeno</option>
+                    <option value="rating">Ocjena (visoka → niska)</option>
+                    <option value="name">Naziv A→Z</option>
+                </select>
+                <button id="randomDestBtn" class="random-btn"><i class="fas fa-dice-d6"></i> Random destinacija</button>
+            </div>
+        </section>
+
+
+        <section id="destinations" class="destinations-section">
+            <h2><i class="fas fa-map-marked-alt"></i> Istraži destinacije</h2>
+            <div id="destinationsGrid" class="destinations-grid"></div>
+            <div id="noResultsMsg" class="no-results hidden">🔍 Nema rezultata za tvoju pretragu. Pokušaj nešto drugo!
+            </div>
+        </section>
+
+
+        <section class="recently-viewed-section">
+            <h3><i class="fas fa-clock"></i> Nedavno pregledano</h3>
+            <div id="recentlyViewedGrid" class="recently-grid"></div>
+        </section>
+
+
+        <section id="gallery" class="gallery-section">
+            <h2><i class="fas fa-images"></i> Galerija BiH</h2>
+            <div class="gallery-grid" id="galleryGrid"></div>
+
+            <div id="lightbox" class="lightbox">
+                <span class="close-lightbox">&times;</span>
+                <img class="lightbox-img" id="lightboxImg">
+            </div>
+        </section>
+
+
+        <section id="about" class="about-section">
+            <div class="about-content">
+                <h2><i class="fas fa-info-circle"></i> O Bosni i Hercegovini</h2>
+                <p>Bosna i Hercegovina je srce Balkana – zemlja oštrih kontrasta, gdje se susreću istok i zapad, planine
+                    i rijeke, tradicija i modernost. Poznata po <strong>netaknutoj prirodi</strong>, <strong>osmanskim
+                        bazarskim džamijama</strong>, <strong>austrougarskim zgradama</strong> i najljepšim očuvanim
+                    planinama poput Bjelašnice, Jahorine i Vranice.</p>
+                <div class="about-grid">
+                    <div class="about-card"><i class="fas fa-utensils"></i>
+                        <h4>Kultura & hrana</h4>
+                        <p>Ćevapi, burek, baklava, kahva na sač – gostoprimstvo je svetinja.</p>
+                    </div>
+                    <div class="about-card"><i class="fas fa-water"></i>
+                        <h4>Priroda</h4>
+                        <p>Rijeka Una, Tara, Neretva; jezera Prokoško, Boracko, Ramsko.</p>
+                    </div>
+                    <div class="about-card"><i class="fas fa-hiking"></i>
+                        <h4>Avantura</h4>
+                        <p>Rafting, kanjoning, planinarenje, skijanje – sve na jednom mjestu.</p>
+                    </div>
+                    <div class="about-card"><i class="fas fa-passport"></i>
+                        <h4>Turizam</h4>
+                        <p>Viza-free za mnoge zemlje, povoljne cijene, autentičan doživljaj.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <footer class="footer">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>Explore Bosnia</h4>
+                    <p>Tvoj vodič kroz najbolje destinacije BiH.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Kontakt</h4>
+                    <p><i class="fas fa-envelope"></i> info@explorebosnia.ba</p>
+                    <p><i class="fas fa-phone"></i> +387 62 812 705</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Prati nas</h4>
+                    <div class="social-links">
+                        <a href="https://www.facebook.com/maliprogramertravnik/"><i class="fab fa-facebook"></i></a>
+                        <a href="https://www.instagram.com/mali.programer/"><i class="fab fa-instagram"></i></a>
+                        <a href="https://twitter.com/maliprogramer"><i class="fab fa-twitter"></i></a>
+                        <a href="https://www.youtube.com/c/MaliProgramer"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Explore Bosnia – Mali Programmeri Kurs.</p>
+            </div>
+        </footer>
+    </div>
+
+
+    <div id="detailModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
